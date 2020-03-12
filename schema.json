@@ -1,0 +1,31 @@
+{
+    "type": "object",
+    "title": "Action object schema",
+    "description": "Used to validate action items.",
+    "properties": {
+        "action": {
+            "title": "Name",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "^[A-Za-z]*",
+            "description": "The name of the action in string format.",
+            "examples": [
+                "jump"
+            ]
+        },
+        "time": {
+            "title": "Time",
+            "type": "number",
+            "minimum": 0,
+            "description": "The time the action took.",
+            "examples": [
+                100
+            ]
+        }
+    },
+    "required": [
+        "action",
+        "time"
+    ]
+}

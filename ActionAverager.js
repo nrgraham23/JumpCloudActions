@@ -1,4 +1,6 @@
+const ajv = require('ajv');
 const Action = require('./Action');
+const schema = require('./schema');
 
 /* 
  * This class keeps a map of Action objects and produces the average
@@ -8,11 +10,14 @@ const Action = require('./Action');
 class ActionAverager {
     constructor() {
         this.actionMap = {};
+        this.ajv = new ajv();
+
+        this.validate = this.ajv.compile(schema);
     }
 
     // Adds an action and updates the time spent on pre-existing actions.
     addAction(actionString) {
-        const action = JSON.parse(actionString);
+        const action = this._parseAction(actionString);
 
         if (typeof this.actionMap[action.action] === 'undefined') {
             this.actionMap[action.action] = new Action(action.action);
@@ -41,6 +46,24 @@ class ActionAverager {
             return action.totalTime / action.numActions;
         }
         return 0;
+    }
+
+    // returns a parsed action or throws an error if the action is
+    // not properly formatted
+    _parseAction(actionString) {
+        let action;
+        if (typeof actionString === 'string') {
+            try {
+                action = JSON.parse(actionString);
+            } catch (e) {
+                throw new Error('Unable to parse action: ' + e);
+            }
+        }
+        if (!this.validate(action)) {
+            throw new Error('Invalid action object: ' +
+                JSON.stringify(this.validate.errors));
+        }
+        return action;
     }
 }
 
