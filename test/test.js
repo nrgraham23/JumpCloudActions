@@ -2,7 +2,7 @@ var assert = require('assert');
 const ActionAverager = require('../ActionAverager');
 
 // test with proper input
-describe('HappyCase', function() {
+describe('Happy Case', function() {
     beforeEach(function() {
         this.actionAverager = new ActionAverager();
         this.jump0 = '{"action":"jump", "time":0}';
@@ -85,6 +85,62 @@ describe('HappyCase', function() {
 
             const result = JSON.parse(this.actionAverager.getStats());
             assert.equal(result[0].avg, 0.5);
+        });
+    });
+});
+
+// input validation tests
+describe('Invalid Inputs', function() {
+    beforeEach(function() {
+        this.actionAverager = new ActionAverager();
+    });
+
+    // unit tests for addAction
+    describe('#addAction()', function() {
+        it('Should throw error when adding "undefined"', function() {
+            assert.throws(() => {this.actionAverager.addAction(undefined)});
+        });
+        it('Should throw error when adding "null"', function() {
+            assert.throws(() => {this.actionAverager.addAction(null)});
+        });
+        it('Should throw error when adding empty object', function() {
+            assert.throws(() => {this.actionAverager.addAction({})});
+        });
+        it('Should throw error when adding action with incorrect fields', function() {
+            const action1 = '{"actions":"jump", "time":100}';
+            assert.throws(() => {this.actionAverager.addAction(action1)});
+        });
+        it('Should throw error when adding action with only "action"', function() {
+            const action1 = '{"action":"jump"}';
+            assert.throws(() => {this.actionAverager.addAction(action1)});
+        });
+        it('Should throw error when adding action with only "time"', function() {
+            const action1 = '{"time":100}';
+            assert.throws(() => {this.actionAverager.addAction(action1)});
+        });
+        it('Should throw error when adding action with more than 20 characters', function() {
+            const action1 = '{"action":"jumpforareallybigname", "time":100}';
+            assert.throws(() => {this.actionAverager.addAction(action1)});
+        });
+        it('Should throw error when adding action that is an empty string', function() {
+            const action1 = '{"action":"", "time":100}';
+            assert.throws(() => {this.actionAverager.addAction(action1)});
+        });
+        it('Should throw error when adding action that is a number', function() {
+            const action1 = '{"action":42, "time":100}';
+            assert.throws(() => {this.actionAverager.addAction(action1)});
+        });
+        it('Should throw error when adding action that has illegal characters', function() {
+            const action1 = '{"action":"jump-42", "time":100}';
+            assert.throws(() => {this.actionAverager.addAction(action1)});
+        });
+        it('Should throw error when adding action with negative time', function() {
+            const action1 = '{"action":"jump", "time":-100}';
+            assert.throws(() => {this.actionAverager.addAction(action1)});
+        });
+        it('Should throw error when adding action with time that is a string', function() {
+            const action1 = '{"action":"jump", "time":"100"}';
+            assert.throws(() => {this.actionAverager.addAction(action1)});
         });
     });
 });
