@@ -33,6 +33,11 @@ describe('Happy Case', function() {
             const action1 = '{"action":"Jump", "time":0.5}';
             assert.doesNotThrow(() => {this.actionAverager.addAction(action1)});
         });
+        it('Action names with capitals should be stored lower case', function() {
+            const action1 = '{"action":"Jump", "time":0.5}';
+            this.actionAverager.addAction(action1);
+            assert.ok(typeof this.actionAverager.actionMap['jump'] !== 'undefined');
+        });
     });
     // tests for get stats
     describe('#getStats()', function() {
@@ -85,6 +90,16 @@ describe('Happy Case', function() {
 
             const result = JSON.parse(this.actionAverager.getStats());
             assert.equal(result[0].avg, 0.5);
+        });
+        it('Should combine actions that have the same name but different cases', function() {
+            const action1 = '{"action":"jump", "time":0.5}'
+            const action2 = '{"action":"JUMP", "time":0.5}';
+            this.actionAverager.addAction(action1);
+            this.actionAverager.addAction(action2);
+
+            const result = JSON.parse(this.actionAverager.getStats());
+            assert.equal(result[0].avg, 0.5);
+            assert.ok(result.length === 1);
         });
     });
 });

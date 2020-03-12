@@ -18,12 +18,13 @@ class ActionAverager {
     // Adds an action and updates the time spent on pre-existing actions.
     addAction(actionString) {
         const action = this._parseAction(actionString);
+        const actionName = action.action.toLowerCase();
 
-        if (typeof this.actionMap[action.action] === 'undefined') {
-            this.actionMap[action.action] = new Action(action.action);
+        if (typeof this.actionMap[actionName] === 'undefined') {
+            this.actionMap[actionName] = new Action(actionName);
         }
-        this.actionMap[action.action].numActions += 1;
-        this.actionMap[action.action].totalTime += action.time;
+        this.actionMap[actionName].numActions += 1;
+        this.actionMap[actionName].totalTime += action.time;
     }
 
     // Produces the average time spent on each action.
