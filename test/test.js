@@ -29,6 +29,10 @@ describe('HappyCase', function() {
             const action1 = '{"action":"Jump", "time":10000}';
             assert.doesNotThrow(() => {this.actionAverager.addAction(action1)});
         });
+        it('Should be able to create action with decimal times', function() {
+            const action1 = '{"action":"Jump", "time":0.5}';
+            assert.doesNotThrow(() => {this.actionAverager.addAction(action1)});
+        });
     });
     // tests for get stats
     describe('#getStats()', function() {
@@ -72,6 +76,15 @@ describe('HappyCase', function() {
             const result = JSON.parse(this.actionAverager.getStats());
             assert.equal(result[0].avg, 150);
             assert.equal(result[1].avg, 75);
+        });
+        it('Should average times correctly when decimals are included', function() {
+            const action1 = '{"action":"jump", "time":0.5}'
+            const action2 = '{"action":"jump", "time":0.5}';
+            this.actionAverager.addAction(action1);
+            this.actionAverager.addAction(action2);
+
+            const result = JSON.parse(this.actionAverager.getStats());
+            assert.equal(result[0].avg, 0.5);
         });
     });
 });
