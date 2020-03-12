@@ -1,0 +1,23 @@
+{
+  "name": "jumpcloudactions",
+  "version": "1.0.0",
+  "description": "A simple action time averager",
+  "main": "ActionAveragerTests.js",
+  "dependencies": {
+    "djv": "^2.1.3-alpha.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nrgraham23/JumpCloudActions.git"
+  },
+  "author": "Nathaniel Graham",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nrgraham23/JumpCloudActions/issues"
+  },
+  "homepage": "https://github.com/nrgraham23/JumpCloudActions#readme"
+}
