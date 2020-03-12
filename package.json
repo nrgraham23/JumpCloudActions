@@ -4,11 +4,12 @@
   "description": "A simple action time averager",
   "main": "ActionAveragerTests.js",
   "dependencies": {
-    "ajv": "^6.12.0"
+    "ajv": "^6.12.0",
+    "mocha": "^7.1.0"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "node ActionAveragerTests.js"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
